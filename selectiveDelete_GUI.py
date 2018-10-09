@@ -48,19 +48,34 @@ class selectiveDelete_GUI( QtGui.QDialog ):
         self.setMinimumWidth( 900 )
         self.setMinimumHeight( 950 )
 
-        # Groupbox containing project settings.
-        l_grpProject = QtGui.QGroupBox( "Project Selection" )
-        l_grdProject = QtGui.QGridLayout()
+        # Groupbox containing seelection settings.
+        l_grpSelection = QtGui.QGroupBox( "Selection" )
+        l_grdSelection = QtGui.QGridLayout()
         l_intCurrRow = 0
 
-        # Project.
-        l_lblProject = QtGui.QLabel( "Project:" )
-        self.m_cbxProject = QtGui.QComboBox()
-        l_grdProject.addWidget( l_lblProject, l_intCurrRow, 0 )
-        l_grdProject.addWidget( self.m_cbxProject, l_intCurrRow, 1 )
+        # Test Cases with linked requirements
+        self.m_rdbSelectionTestCases = QtGui.QRadioButton( "Test Cases" )
+        self.m_rdbSelectionRequirements = QtGui.QRadioButton( "Requirements" )
+
+        l_grdSelection.addWidget( self.m_rdbSelectionTestCases, l_intCurrRow, 0 )
+        l_grdSelection.addWidget( self.m_rdbSelectionRequirements, l_intCurrRow, 1 )
         l_intCurrRow += 1
 
-        l_grpProject.setLayout( l_grdProject )
+        l_grpSelection.setLayout( l_grdSelection )
+
+        l_grpSelectionFilter = QtGui.QGroupBox( "Selection Filter" )
+        l_grdSelectionFilter = QtGui.QGridLayout()
+        l_intCurrRow = 0
+
+        self.m_rdbSelectionAll = QtGui.QRadioButton( "All" )
+        self.m_rdbSelectionLinked = QtGui.QRadioButton( "Linked to Requirements/Test Cases" )
+        l_intCurrRow += 1
+
+        l_grdSelectionFilter.addWidget( self.m_rdbSelectionAll, l_intCurrRow, 0 )
+        l_grdSelectionFilter.addWidget( self.m_rdbSelectionLinked, l_intCurrRow, 1 )
+        l_intCurrRow += 1
+
+        l_grpSelectionFilter.setLayout( l_grdSelectionFilter )
 
         # Groupbox containing selection treeview for folders and collections
         l_grpFolderSelection = QtGui.QGroupBox("Folder Selection")
@@ -214,14 +229,15 @@ class selectiveDelete_GUI( QtGui.QDialog ):
         l_hbxImportButtons.addStretch(50)
 
         l_vbxMain = QtGui.QVBoxLayout()
-        l_vbxMain.addWidget(l_grpProject)
-        l_vbxMain.addWidget(l_grpFolderSelection)
-        l_vbxMain.addWidget(l_grpCollectionSelection)
-        l_vbxMain.addWidget(l_grpTypeSelection)
-        l_vbxMain.addWidget(l_grpFieldSelection)
-        l_vbxMain.addWidget(l_grpOutput)
+        l_vbxMain.addWidget( l_grpSelection )
+        l_vbxMain.addWidget( l_grpSelectionFilter )
+        l_vbxMain.addWidget( l_grpFolderSelection )
+        l_vbxMain.addWidget( l_grpCollectionSelection )
+        l_vbxMain.addWidget( l_grpTypeSelection )
+        l_vbxMain.addWidget( l_grpFieldSelection )
+        l_vbxMain.addWidget( l_grpOutput )
         # Align button layout to bottom to allow resizing.
-        l_vbxMain.addLayout(l_hbxImportButtons, alignment=QtCore.Qt.AlignBottom)
+        l_vbxMain.addLayout( l_hbxImportButtons, alignment=QtCore.Qt.AlignBottom )
 
         l_mainWidget = QtGui.QWidget()
         l_mainWidget.setLayout( l_vbxMain )
@@ -323,8 +339,6 @@ class selectiveDelete_GUI( QtGui.QDialog ):
 
         
     def _activateGUI( self ):
-
-        self.m_cbxProject.currentIndexChanged.connect( self._project_selected )
 
         self.m_tvwFolder.clicked.connect( self._folder_or_collection_selected )
 
